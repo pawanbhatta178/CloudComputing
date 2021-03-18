@@ -1,0 +1,38 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: coding-rant-cluster-v1
+  region: us-east-1
+  version: "1.17"
+
+vpc:
+  id: vpc-004de17e76f725903
+  subnets:
+    public:
+      public-subnet1: 
+        id: subnet-0e547d7a9d1a167d1
+      public-subnet2:
+        id: subnet-0e778758a8b5066ec
+    private:
+      private-subnet3: 
+        id: subnet-038152844a314efc3
+      private-subnet4:
+        id: subnet-019f47a72c627b18b
+      
+nodeGroups:
+- name: ng-1-workers
+  labels: { role: k8-master-role }
+  instanceType: t2.micro
+  desiredCapacity: 10
+  volumeSize: 80
+  privateNetworking: true
+  ssh: 
+    publicKeyName: coding-rant-k8
+  subnets:
+  - private-subnet3  
+  - private-subnet4
+
+
+

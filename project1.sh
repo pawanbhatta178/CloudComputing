@@ -120,3 +120,24 @@ kops create cluster --name $NAME --zones us-west-2a,us-west-2b,us-west-2c  --aut
 
 #Deleting the cluster
 kops delete cluster --name=coding-rant.k8s.local --yes
+
+#installing eksctl
+brew install weaveworks/tap/eksctl
+
+# creating the cluster with the config.yaml
+eksctl create cluster -f config.yaml
+
+#Creating the cluster using eksctl
+pawanbhatta@pawans-MBP CloudComputing % eksctl create cluster \
+--name coding-rant-cluster-v1 \
+--version 1.17 \
+--region us-east-1 \
+--nodegroup-name coding-rant-nodes \
+--node-type t2.micro \
+--nodes 2 \
+
+#Viewing the newly created worker nodes
+pawanbhatta@pawans-MBP CloudComputing % kubectl get nodes
+NAME                            STATUS   ROLES    AGE   VERSION
+ip-192-168-59-48.ec2.internal   Ready    <none>   50m   v1.17.12-eks-7684af
+ip-192-168-8-160.ec2.internal   Ready    <none>   50m   v1.17.12-eks-7684af
