@@ -96,3 +96,27 @@ pawanbhatta@pawans-MBP CloudComputing % kubectl delete -f nginx-service.yaml
 service "nginx-service" deleted
 pawanbhatta@pawans-MBP CloudComputing % kubectl delete deployment nginx-deployment
 deployment.apps "nginx-deployment" deleted
+
+##Creating Kubernetes cluster on AWS
+
+#Installing kops
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+
+#Installing kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+
+#Creating S3 bucket for the kubernetes state store
+aws s3api create-bucket --bucket k8-kops-bukcet-coding-rant
+#Creating env variable pointing to the place where our bucket is located
+export KOPS_STATE_STORE=s3://k8-kops-bucket-coding-rant
+#Naming the cluster
+export NAME=coding-rant.k8s.local
+#A three-master and five-worker node cluster, with master nodes spread across different Availability Zones, can be created using the following command:
+kops create cluster --name $NAME --zones us-west-2a,us-west-2b,us-west-2c  --authorization RBAC --master-size t2.micro --node-size t2.micro --yes
+
+#Deleting the cluster
+kops delete cluster --name=coding-rant.k8s.local --yes
