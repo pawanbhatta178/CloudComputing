@@ -1,0 +1,2 @@
+##Submitting our training job to gcp
+gcloud ml-engine jobs submit training mnist_recognition3 --package-path=./trainer --module-name trainer.task --job-dir=gs://pawan-bucket-9999/output1  --config=config.yaml --region=us-east1
