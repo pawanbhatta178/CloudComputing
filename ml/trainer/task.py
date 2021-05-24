@@ -14,6 +14,7 @@ tf_config = json.loads(os.environ['TF_CONFIG'])
 num_workers = len(tf_config['cluster']['worker'])
 
 
+
 (x_train, y_train),(x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
 x_train=tf.keras.utils.normalize(x_train, axis=1)

@@ -9,10 +9,11 @@ import tensorflow as tf
 from tensorflow.keras import layers
 from matplotlib import pyplot as plt
 
-per_worker_batch_size = 1
+per_worker_batch_size = 64
 tf_config = json.loads(os.environ['TF_CONFIG'])
 num_workers = len(tf_config['cluster']['worker'])
 
+print(tf_config)
 
 (x_train, y_train),(x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
@@ -20,7 +21,14 @@ x_train=tf.keras.utils.normalize(x_train, axis=1)
 x_test=tf.keras.utils.normalize(x_test, axis=1)
 
 
-strategy=tf.distribute.experimental.MultiWorkerMirroredStrategy()
+strategy=tf.distribute.experimental.ParameterServerStrategy(
+    cluster_resolver=None,
+    variable_partitioner=None)
+    
+coordinator = tf.distribute.experimental.coordinator.ClusterCoordinator(
+    strategy=strategy
+    )
+
 
 with strategy.scope():
     model=tf.keras.models.Sequential()
